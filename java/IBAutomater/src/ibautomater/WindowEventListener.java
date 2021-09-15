@@ -17,6 +17,7 @@ package ibautomater;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.AWTEventListener;
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -74,6 +76,10 @@ public class WindowEventListener implements AWTEventListener {
     private int twoFactorConfirmationAttempts = 0;
     private final int maxTwoFactorConfirmationAttempts = 3;
 
+    // TEST:
+    private boolean testSimulatedDisconnectionDone = false;
+    private Instant testSimulatedDisconnectionTime = null;
+
     /**
      * Creates a new instance of the {@link WindowEventListener} class.
      *
@@ -98,6 +104,26 @@ public class WindowEventListener implements AWTEventListener {
         }
         else {
             return;
+        }
+
+        // TEST:
+        if (testSimulatedDisconnectionTime == null) {
+            testSimulatedDisconnectionTime = Instant.now().plusSeconds(120);
+            this.automater.logMessage("TEST: simulated disconnection time set at: " + testSimulatedDisconnectionTime.toString());
+        }
+        else {
+            if (!testSimulatedDisconnectionDone && Instant.now().isAfter(testSimulatedDisconnectionTime)) {
+                this.automater.logMessage("TEST: simulated disconnection start");
+                testSimulatedDisconnectionDone = true;
+
+                try {
+                    JDialog dialog = new JDialog(automater.getMainWindow(), "IB Gateway");
+                    dialog.add(new JLabel("Connection to server failed: Server disconnected, please try again"));
+                    dialog.setVisible(true);
+                } catch (Exception e) {
+                    automater.logMessage("TEST: create dialog error: " + e.getMessage());
+                }
+            }
         }
 
         try {
