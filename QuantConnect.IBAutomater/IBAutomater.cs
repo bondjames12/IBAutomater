@@ -166,6 +166,12 @@ namespace QuantConnect.IBAutomater
             Console.WriteLine("IBAutomater stopped");
         }
 
+        public IBAutomater()
+        {
+            
+        }
+
+
         /// <summary>
         /// Creates a new instance of the <see cref="IBAutomater"/> class
         /// </summary>
