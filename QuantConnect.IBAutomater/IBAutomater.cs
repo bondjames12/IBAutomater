@@ -214,8 +214,10 @@ namespace QuantConnect.IBAutomater
 
             StopGatewayRestartTimeoutMonitor();
 
+            
             // remove Java agent setting from IB configuration file
-            UpdateIbGatewayConfiguration(GetIbGatewayVersionPath(), false);
+            //Don't need this for my setup
+            //UpdateIbGatewayConfiguration(GetIbGatewayVersionPath(), false);
         }
 
         /// <summary>
