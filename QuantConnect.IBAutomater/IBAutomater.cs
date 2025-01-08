@@ -125,7 +125,7 @@ namespace QuantConnect.IBAutomater
             var password = config["ib-password"].ToString();
             var tradingMode = config["ib-trading-mode"].ToString();
             var portNumber = config["ib-port"].ToObject<int>();
-            var ibVersion = "974";
+            var ibVersion = "1023";
             if (config["ib-version"] != null)
             {
                 ibVersion = config["ib-version"].ToString();
@@ -191,7 +191,7 @@ namespace QuantConnect.IBAutomater
             _tradingMode = tradingMode;
             _portNumber = portNumber;
             _exportIbGatewayLogs = exportIbGatewayLogs;
-
+            _ibServerRegion = Region.America;
             _timerLogReader = new Timer(LogReaderTimerCallback, null, Timeout.Infinite, Timeout.Infinite);
 
 
